@@ -1,3 +1,4 @@
+{% load rest_framework %}
 <html>
 <head>
 <title>Biomodels</title>
@@ -5,11 +6,11 @@
 <body>
 <center><h2><a href="/publication?submitLow=&submitHigh=&startRow=1&maxRows=10&hasData=all&waiting=on&queued=on&dispatched=on&running=on">Publications</a>&nbsp;&nbsp;&nbsp;BioModels&nbsp;&nbsp;&nbsp;<a href="/simstatus?submitLow=&submitHigh=&startRow=1&maxRows=10&hasData=all&active=on&running=on&completed=on&stopped=on&failed=on">Simulation Status</a>&nbsp;&nbsp;&nbsp;<a href="/simtask?submitLow=&submitHigh=&startRow=1&maxRows=10&hasData=all&waiting=on&queued=on&dispatched=on&running=on">Simulation Tasks</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(not logged in <a href='/loginform'>sign in</a>)</h2></center><br/><center>
 
-<form method="POST">
-    {% csrf_token %}
+<form name='myform' method="POST">
+	{% csrf_token %}
 	<table><tbody>
-	<tr><td>BioModel Name</td><td><input type='text' name='bmName' value=''/></td></tr>
-	<tr><td>BioModel ID</td><td><input type='text' name='bmId' value=''/></td></tr>
+	<tr><td>BioModel Name</td><td><input type='text' name='bmName' value='all'/></td></tr>
+	<tr><td>BioModel ID</td><td><input type='text' name='bmId' value='all'/></td></tr>
 	<tr><td>Category</td><td>
 						<input type='radio' name='category' value='all' checked=on>all</input>
 						<input type='radio' name='category' value='public' >public</input>
@@ -18,11 +19,11 @@
 						<input type='radio' name='category' value='tutorial' >tutorials</input>
 						<input type='radio' name='category' value='education' >educational</input>
 						</td></tr>
-	<tr><td>Owner</td><td><input type='text' name='owner' value=''/></td></tr>
+	<tr><td>Owner</td><td><input type='text' name='owner' value='all'/></td></tr>
 	<tr><td>Begin Time</td><td><input type='text' name='savedLow' value=''/></td></tr>
 	<tr><td>End Timestamp</td><td><input type='text' name='savedHigh' value=''/></td></tr>
-	<tr><td>start row</td><td><input type='text' name='startRow' value='5'/></td></tr>
-	<tr><td>max num rows</td><td><input type='text' name='maxRows' value='1'/></td></tr>
+	<tr><td>start row</td><td><input type='text' name='startRow' value='1'/></td></tr>
+	<tr><td>max num rows</td><td><input type='text' name='maxRows' value='10'/></td></tr>
 	<tr><td>Order By</td><td>
 						<input type='radio' name='orderBy' value='date_desc' >Date (newest)</input>
 						<input type='radio' name='orderBy' value='date_asc' >Date (oldest)</input>
@@ -42,33 +43,36 @@
 <th>bioModel&nbsp;name</th>
 <th>Owner</th>
 <th>Date&nbsp;Saved</th>
- <th>Simulations</th>
+<!-- <th>Simulations</th> -->
 <th>&quot;Applications&quot; - Simulations</th>
 </tr>
+{% for dat in data %}
 <tr>
-<td><a href="/biomodel/22403238">22403238</a></td>
-<td>120504_SCAB100B</td>
-<td>coatesworth</td>
-<td>Jun 20, 2007</td>
-<td><a href='./simulation/22402655'>Simulation0</a>&nbsp;&nbsp; <a href='./simulation/22402657'>Simulation1</a>&nbsp;&nbsp; </td>
-<td><a href='./application/22402608'>Spatial</a>&nbsp;&nbsp; </td>
-
-
+<td><a href="/biomodel/{{dat.bmKey}}">{{dat.bmKey}}</a></td>
+<td>{{dat.name}}</td>
+<td>{{dat.ownerName}}</td>
+<td>{{dat.formatDate}}</td>
+<!-- <td><a href='./simulation/{{dat.bmKey}}'>Simulation0</a>&nbsp;&nbsp; <a href='./simulation/{{dat.bmKey}}'>Simulation1</a>&nbsp;&nbsp; </td>
+<td><a href='./application/{{dat.bmKey}}'>Spatial</a>&nbsp;&nbsp; </td> -->
 <td>
-&quot;Spatial&quot; - 
-&nbsp;&nbsp;<a href='/biomodel/22403238/simulation/22402655'>Simulation0</a>&nbsp;&nbsp;<a href='/biomodel/22403238/simulation/22402657'>Simulation1</a>
+&quot;Spatial&quot;<br>&nbsp;&nbsp;<a href='/biomodel/{{dat.bmKey}}/simulation/{{dat.bmKey}}'>Simulation0</a>&nbsp;&nbsp;<a href='/biomodel/{{dat.bmKey}}/simulation/{{dat.bmKey}}'>Simulation1</a>
 <br/>
-
 </td>
-
-
 </tr>
+{% endfor %}
 </table>
 <br/>
 
 JSON response<br>
-{% for key, value in data.items %}
-{{ value }}
-{% endfor %}
+
+{{data}}
+<script>
+	// if(document.forms['myform']['bmName'].value == "")
+	// 	document.forms['myform']['bmName'].value = "all"
+	// if(document.forms['myform']['bmId'].value == "")
+	// 	document.forms['myform']['bmId'].value = "all"
+	// if(document.forms['myform']['owner'].value == "")
+	// 	document.forms['myform']['owner'].value = "all"
+</script>
 </body>
 </html>
