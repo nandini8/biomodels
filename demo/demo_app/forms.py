@@ -4,5 +4,5 @@ from .models import biomodel
 class BioModelForm(forms.ModelForm):
     class Meta:
         model = biomodel
-        fields = ('bmKey', 'name', 'privacy',)
+        fields = '__all__'
 

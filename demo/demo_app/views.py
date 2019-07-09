@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse,  HttpResponse
 from .models import biomodel
 from urllib.request import urlopen
 import json
@@ -83,11 +83,24 @@ def biomodel_new(request):
         form = BioModelForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.bmKey = request.bmKey
-            post.name = request.name
-            post.prvacy = request.privacy
+            post.bmKey = request.POST.get('bmKey')
+            post.name = request.POST.get('name')
+            post.prvacy = request.POST.get('privacy')
             post.save()
-            return redirect('biomodels')
+        return redirect('/biomodels')
     else:
         form = BioModelForm()
         return render(request, 'addrecord.html', {'form': form})
+
+def publication(request):
+    return HttpResponse("<h1>Publication</h1>")
+def simstatus(request):
+    return HttpResponse("<h1>Simulation Status</h1>")
+def simtask(request):
+    return HttpResponse("<h1>Simulation Task</h1>")
+def application(request, key):
+    return HttpResponse("<h1>Simulation for "+ key +"</h1>")
+def loginform(request):
+    return render(request, 'signin.html')
+def login(request):
+    return HttpResponse("<h1>Login</h1>")

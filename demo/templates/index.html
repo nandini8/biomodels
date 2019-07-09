@@ -9,8 +9,8 @@
 <form name='myform' method="POST">
 	{% csrf_token %}
 	<table><tbody>
-	<tr><td>BioModel Name</td><td><input type='text' name='bmName' value='all'/></td></tr>
-	<tr><td>BioModel ID</td><td><input type='text' name='bmId' value='all'/></td></tr>
+	<tr><td>BioModel Name</td><td><input type='text' name='bmName' value='all' onclick="novaluename()"/></td></tr>
+	<tr><td>BioModel ID</td><td><input type='text' name='bmId' value='all' onclick="novalueid()"/></td></tr>
 	<tr><td>Category</td><td>
 						<input type='radio' name='category' value='all' checked=on>all</input>
 						<input type='radio' name='category' value='public' >public</input>
@@ -19,7 +19,7 @@
 						<input type='radio' name='category' value='tutorial' >tutorials</input>
 						<input type='radio' name='category' value='education' >educational</input>
 						</td></tr>
-	<tr><td>Owner</td><td><input type='text' name='owner' value='all'/></td></tr>
+	<tr><td>Owner</td><td><input type='text' name='owner' value='all' onclick="novalueowner()"/></td></tr>
 	<tr><td>Begin Time</td><td><input type='text' name='savedLow' value=''/></td></tr>
 	<tr><td>End Timestamp</td><td><input type='text' name='savedHigh' value=''/></td></tr>
 	<tr><td>start row</td><td><input type='text' name='startRow' value='1'/></td></tr>
@@ -36,7 +36,8 @@
 (Owner also accepts all_public, shared, Education, and tutorial)
 </center>
 
-<br/><h3>query returned 1 results</h3>
+{% block result%}
+<br/><h3>query returned {{len}} results</h3>
 <table border='1'>
 <tr>
 <th>bioModel&nbsp;ids</th>
@@ -66,13 +67,17 @@
 JSON response<br>
 
 {{data}}
+{% endblock %}
 <script>
-	// if(document.forms['myform']['bmName'].value == "")
-	// 	document.forms['myform']['bmName'].value = "all"
-	// if(document.forms['myform']['bmId'].value == "")
-	// 	document.forms['myform']['bmId'].value = "all"
-	// if(document.forms['myform']['owner'].value == "")
-	// 	document.forms['myform']['owner'].value = "all"
+	function novaluename(){
+		document.forms['myform']['bmName'].value = ""
+	}
+	function novalueid(){
+		document.forms['myform']['bmId'].value = ""
+	}
+	function novalueowner(){
+		document.forms['myform']['owner'].value = ""
+	}
 </script>
 </body>
 </html>

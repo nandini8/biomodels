@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import bio_detail, access_data, biomodel_new
+from .views import bio_detail, access_data, biomodel_new, publication, simstatus, simtask, application, loginform, login
 from .apiviews import BioModelList, BioModelDetails, BioModelSearch
 
 urlpatterns = [
@@ -24,5 +24,11 @@ urlpatterns = [
     path('biomodel', access_data, name='access_data'),
     path('addrecord', biomodel_new, name='biomodel_new'),
     path('search', BioModelSearch.as_view(), name='search'),
+    path('publication', publication, name='publication'),
+    path('simstatus', simstatus, name='simstatus'),
+    path('simtask', simtask, name='simtask'),
+    # path('biomodel/<int:key>/simulation', application, name='application'),
+    path('loginform', loginform, name='loginform'),
+    path('login', login, name='login'),
 ]
 

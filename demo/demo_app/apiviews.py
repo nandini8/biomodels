@@ -55,7 +55,9 @@ class BioModelSearch(APIView):
         data = BioModelSerializer(bio_objects, many=True).data
         data = json.dumps(data)
         data = json.loads(data)
+        print(len(data))
         for x in data:
-            x['formatDate'] = datetime.strptime(x['saveDate'], "%Y-%m-%dT%H:%M:%S.%f+05:30" )
+            x ['formatDate'] = x['saveDate'][:10]
+            x['formatDate'] = datetime.strptime(x['formatDate'], "%Y-%m-%d" )
             x['formatDate'] = x['formatDate'].strftime("%b %d, %Y")
-        return Response({'data': data},  template_name = 'index.html')
+        return Response({'data': data, 'len':len(data)},  template_name = 'index.html')
