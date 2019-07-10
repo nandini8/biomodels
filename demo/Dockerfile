@@ -1,13 +1,16 @@
 FROM python:3.6
 EXPOSE 8000
 
-RUN mkdir -p /usr/src/python
-COPY requirements.txt /usr/src/requirements.txt
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-WORKDIR /usr/src/python
+ADD ./requirements.txt /usr/src/app/requirements.txt 
+
 RUN pip install -r requirements.txt
 
-ENV DJANGO_SETTINGS_MODULE demo.settings.local
+ENV DJANGO_SETTINGS_MODULE demo.settings
 
-WORKDIR /usr/src/app
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+ADD . /usr/src/app
+RUN echo "$PWD"
+CMD ["python", "manage.py", "runserver",  "0.0.0.0:8000"]
+
